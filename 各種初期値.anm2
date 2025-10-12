@@ -1,0 +1,19 @@
+--track@t:トラック,0,100,10,1
+--check@c:チェック,0
+--color@col:色,0xffffff
+--file@path:画像
+--font@font:フォント名,MS UI Gothic
+--figure@fig:図形,四角形
+--select@deco:リスト,標準文字=0,影付き文字=1,影付き文字(薄)=2,縁取り文字=3,縁取り文字(細)=4,縁取り文字(太)=5,縁取り文字(角)=6
+--value@num:数値,0
+--value@text:文字列,"こんにちわ"
+
+debug_print("トラック変数の中身:" .. t)
+debug_print("チェック変数の中身:" .. c)
+debug_print("色変数の中身:" .. col)
+debug_print("画像変数の中身:" .. path)
+debug_print("フォント変数の中身:" .. font)
+debug_print("図形変数の中身:" .. fig)
+debug_print("リスト変数の中身:" .. deco)
+debug_print("数値変数の中身:" .. num)
+debug_print("文字列変数の中身:" .. text)
