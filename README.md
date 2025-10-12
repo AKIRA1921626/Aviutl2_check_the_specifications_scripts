@@ -1,0 +1,2 @@
+# Aviutl2_check_the_specifications_scripts
+Aviutl2の仕様確認や、関数の操作方法を確認するためのスクリプト
