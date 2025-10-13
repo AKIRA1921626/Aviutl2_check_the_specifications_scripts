@@ -1,0 +1,5 @@
+--check@color_changed:色変え赤
+
+if(color_changed) then
+	obj.effect("単色化","強さ",100,"color",0xbf0000,"輝度を保持する",0)
+end
