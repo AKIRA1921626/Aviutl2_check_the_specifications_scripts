@@ -1,0 +1,32 @@
+-- スクリプトが文字単位で反復実行されるたびに呼び出されるメイン関数
+
+    -- 【元の位置計算】
+    local offset_x = obj.index * 40
+    local text_pos = (offset_x)*4
+
+    -- 【obj.indexとobj.numの値の確認】
+    local text_num = tostring(obj.index).. "/".. tostring(obj.num)
+    local display_text = "数"..text_num
+
+    -- obj.indexの値に応じて描画位置を変更
+    if(obj.index < 7) then
+        -- 0〜6文字目 (計7文字) は通常の行で描画
+        obj.load("text", display_text)
+        obj.draw(text_pos - 500)
+    else
+        -- 7文字目以降 (obj.index >= 7) は次の行として描画
+
+        -- 7文字目以降の文字について、次の行での相対的なインデックスを計算する
+        -- obj.index = 7 -> relative_index = 0 (次の行の1文字目)
+        -- obj.index = 8 -> relative_index = 1 (次の行の2文字目)
+        local relative_index = obj.index - 7
+        
+        -- 次の行の位置を計算: relative_indexに基づいてX座標を計算し、Y座標を200に固定する
+        -- text_posの計算式を使用し、relative_indexを適用
+        local next_line_x = (relative_index * 40) * 4 
+
+        -- X座標は次の行の先頭に見えるように、元の行の先頭位置(text_pos - 500の-500)からスタート
+        -- Y座標は次の行として下にずらす (例: 200)
+        obj.load("text", display_text)
+        obj.draw(next_line_x - 500, 200)
+    end
