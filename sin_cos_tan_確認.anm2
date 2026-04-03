@@ -1,0 +1,34 @@
+--track@sinx:obj.oxのsin,0,1000,0
+--track@siny:obj.oyのsin,0,1000,0
+--track@cosx:obj.oxのcos,0,1000,0
+--track@cosy:obj.oyのcos,0,1000,0
+--track@tanx:obj.oxのtan,0,1000,0
+--track@tany:obj.oyのtan,0,1000,0
+--track@size:円サイズ,0,1000,100
+--color@col:円色,0x1e961e
+
+obj.load("figure","円",col,size)
+
+local ax = math.sin(obj.time) * sinx
+local ay = math.sin(obj.time) * siny
+local bx = math.cos(obj.time) * cosx
+local by = math.cos(obj.time) * cosy
+local cx = math.tan(obj.time) * tanx
+local cy = math.tan(obj.time) * tany
+
+obj.draw(ax+bx+cx,ay+by+cy)
+
+obj.load("text","obj.oxのmath.sin(obj.time)*sinの数値は:"..sinx)
+obj.draw(-obj.screen_h/2,-400)
+obj.load("text","obj.oyのmath.sin(obj.time)*sinの数値は:"..siny)
+obj.draw(-obj.screen_h/2,-300)
+
+obj.load("text","obj.oyのmath.cos(obj.time)*cosの数値は:"..cosx)
+obj.draw(-obj.screen_h/2,300)
+obj.load("text","obj.oyのmath.cos(obj.time)*cosの数値は:"..cosy)
+obj.draw(-obj.screen_h/2,400)
+
+obj.load("text","obj.oxのmath.tan(obj.time)*tanの数値は:"..tanx)
+obj.draw(obj.screen_h/2,-400)
+obj.load("text","obj.oyのmath.tan(obj.time)*tanの数値は:"..tany)
+obj.draw(obj.screen_h/2,-300)
