@@ -1,9 +1,9 @@
---track@sinx:obj.oxのsin,0,1000,0
---track@siny:obj.oyのsin,0,1000,0
---track@cosx:obj.oxのcos,0,1000,0
---track@cosy:obj.oyのcos,0,1000,0
---track@tanx:obj.oxのtan,0,1000,0
---track@tany:obj.oyのtan,0,1000,0
+--track@sinx:obj.oxのsin,-1000,1000,0
+--track@cosx:obj.oxのcos,-1000,1000,0
+--track@tanx:obj.oxのtan,-1000,1000,0
+--track@siny:obj.oyのsin,-1000,1000,0
+--track@cosy:obj.oyのcos,-1000,1000,0
+--track@tany:obj.oyのtan,-1000,1000,0
 --track@size:円サイズ,0,1000,100
 --color@col:円色,0x1e961e
 
@@ -18,17 +18,28 @@ local cy = math.tan(obj.time) * tany
 
 obj.draw(ax+bx+cx,ay+by+cy)
 
-obj.load("text","obj.oxのmath.sin(obj.time)*sinの数値は:"..sinx)
+obj.load("text","obj.oxの math.sin(obj.time)*sin の数値は:"..string.format("%.1f", sinx))
 obj.draw(-obj.screen_h/2,-400)
-obj.load("text","obj.oyのmath.sin(obj.time)*sinの数値は:"..siny)
+obj.load("text","obj.oxの math.cos(obj.time)*cos の数値は:"..string.format("%.1f", cosx))
 obj.draw(-obj.screen_h/2,-300)
+obj.load("text","obj.oxの math.tan(obj.time)*tan の数値は:"..string.format("%.1f", tanx))
+obj.draw(-obj.screen_h/2,-200)
 
-obj.load("text","obj.oyのmath.cos(obj.time)*cosの数値は:"..cosx)
+obj.load("text","obj.oyの math.sin(obj.time)*sin の数値は:"..string.format("%.1f", siny))
+obj.draw(-obj.screen_h/2,200)
+obj.load("text","obj.oyの math.cos(obj.time)*cos の数値は:"..string.format("%.1f", cosy))
 obj.draw(-obj.screen_h/2,300)
-obj.load("text","obj.oyのmath.cos(obj.time)*cosの数値は:"..cosy)
+obj.load("text","obj.oyの math.tan(obj.time)*tan の数値は:"..string.format("%.1f", tany))
 obj.draw(-obj.screen_h/2,400)
 
-obj.load("text","obj.oxのmath.tan(obj.time)*tanの数値は:"..tanx)
-obj.draw(obj.screen_h/2,-400)
-obj.load("text","obj.oyのmath.tan(obj.time)*tanの数値は:"..tany)
-obj.draw(obj.screen_h/2,-300)
+local oxpos = ax+bx+cx
+local oypos = ay+by+cy
+
+obj.load("text","現在の obj.ox の数値は:"..string.format("%.1f", oxpos))
+obj.draw(obj.screen_h/2,200)
+
+obj.load("text","現在の obj.oy の数値は:"..string.format("%.1f", oypos))
+obj.draw(obj.screen_h/2,300)
+
+obj.load("text","現在の obj.time の数値は:"..string.format("%.1f", obj.time))
+obj.draw(obj.screen_h/2,400)

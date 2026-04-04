@@ -48,3 +48,6 @@ objドットdrawpoly_サンプル.anm2の機能をシンプルにし、使い方
 
 # sin_cos_tan_確認.anm2
 三角関数の数値がどのように計算されるかが感覚的につかめるように、それらの数値で座標移動を行わせている。  
+obj.oxのsin + obj.oyのcos で円運動  
+obj.oyのsin + obj.oxのcos で円運動  
+となる。
