@@ -1,0 +1,85 @@
+--track@time:時間,0,1,0,0.01
+--track@p0x:点p0x,-2000,2000,-400,1
+--track@p0y:点p0y,-2000,2000,-400,1
+--track@p0z:点p0z,-2000,2000,0,1
+--track@p1x:点p1x,-2000,2000,0,1
+--track@p1y:点p1y,-2000,2000,-200,1
+--track@p1z:点p1z,-2000,2000,0,1
+--track@p2x:点p2x,-2000,2000,0,1
+--track@p2y:点p2y,-2000,2000,200,1
+--track@p2z:点p2z,-2000,2000,0,1
+--track@p3x:点p3x,-2000,2000,-400,1
+--track@p3y:点p3y,-2000,2000,400,1
+--track@p3z:点p3z,-2000,2000,0,1
+--select@type:点図形タイプ=1,円=1,四角形=2,三角形=3,五角形=4,六角形=5,星型=6,ハート=7
+--track@size:点図形サイズ,0,1000,200,1
+--color@color:点図形色,0x149678
+
+-- もとから持っていたオブジェクトをcacheに一旦避難
+obj.copybuffer("cache:origin","object")
+
+----------------- p0~p3までの位置をわかりやすいように表示させるだけの処理
+
+local shape_name = {
+        [1] = "円",
+        [2] = "四角形",
+        [3] = "三角形",
+        [4] = "五角形",
+        [5] = "六角形",
+        [6] = "星型",
+        [7] = "ハート",
+}
+
+-- ここで元から持っていたオブジェクトが上書きされている
+local fig = shape_name[type]
+
+obj.load("figure",fig,color,size)
+-- interpolationのp0を描画
+obj.draw(p0x,p0y,p0z)
+-- interpolationのp1を描画
+obj.draw(p1x,p1y,p1z)
+-- interpolationのp2を描画
+obj.draw(p2x,p2y,p2z)
+-- interpolationのp3を描画
+obj.draw(p3x,p3y,p3z)
+
+obj.load("text","p0")
+-- interpolationのp0を描画
+obj.draw(p0x,p0y,p0z)
+obj.load("text","p1")
+-- interpolationのp1を描画
+obj.draw(p1x,p1y,p1z)
+obj.load("text","p2")
+-- interpolationのp2を描画
+obj.draw(p2x,p2y,p2z)
+obj.load("text","p3")
+-- interpolationのp3を描画
+obj.draw(p3x,p3y,p3z)
+
+----------------- 位置をわかりやすいように表示させるだけの処理を終了
+
+----------------- インターポレーション本体
+
+-- もとから持っていたオブジェクトをcacheから再度持ってくる
+obj.copybuffer("object","cache:origin")
+
+local x,y,z = obj.interpolation(time,p0x,p0y,p0z,p1x,p1y,p1z,p2x,p2y,p2z,p3x,p3y,p3z)
+
+-- ログに各種数値を表示させる
+print("xの数値:"..x)
+print("yの数値:"..y)
+print("zの数値:"..z)
+
+-- interpolationの結果を描画
+obj.draw(x,y,z)
+
+----------------- インターポレーション本体終了
+
+--[["lua.txt"の内容
+        ○obj.interpolation(time,x0,y0,z0,x1,y1,z1,x2,y2,z2,x3,y3,z3)
+                連続した点p0(x0,y0,z0),p1(x1,y1,z1),p2(x2,y2,z2),p3(x3,y3,z3)から
+                時間time(0～1)に応じたp1,p2間の座標を計算します。
+                ※y,z座標は省略することが出来ます。
+                例：x,y,z = obj.interpolation(time,x0,y0,z0,x1,y1,z1,x2,y2,z2,x3,y3,z3)
+                    x,y = obj.interpolation(time,x0,y0,x1,y1,x2,y2,x3,y3)
+]]
