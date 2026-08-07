@@ -1,0 +1,89 @@
+--track@p0x:点p0x,-2000,2000,-400,1
+--track@p0y:点p0y,-2000,2000,-400,1
+--track@p0z:点p0z,-2000,2000,0,1
+--track@p1x:点p1x,-2000,2000,0,1
+--track@p1y:点p1y,-2000,2000,-200,1
+--track@p1z:点p1z,-2000,2000,0,1
+--track@p2x:点p2x,-2000,2000,0,1
+--track@p2y:点p2y,-2000,2000,200,1
+--track@p2z:点p2z,-2000,2000,0,1
+--track@p3x:点p3x,-2000,2000,-400,1
+--track@p3y:点p3y,-2000,2000,400,1
+--track@p3z:点p3z,-2000,2000,0,1
+--select@point_type:点図形タイプ=1,円=1,四角形=2,三角形=3,五角形=4,六角形=5,星型=6,ハート=7
+--track@point_size:点図形サイズ,0,1000,200,1
+--color@point_color:点図形色,0x149678
+--select@line_type:線図形タイプ=1,円=1,四角形=2,三角形=3,五角形=4,六角形=5,星型=6,ハート=7
+--track@line_size:線図形サイズ,0,1000,10,1
+--color@line_color:線図形色,0xffffff
+
+obj.setanchor("p0x,p0y",0)
+
+obj.setoption("drawtarget","tempbuffer",obj.screen_w,obj.screen_h)
+
+----------------- p0~p3までの位置をわかりやすいように表示させるだけの処理
+
+local shape_name = {
+        [1] = "円",
+        [2] = "四角形",
+        [3] = "三角形",
+        [4] = "五角形",
+        [5] = "六角形",
+        [6] = "星型",
+        [7] = "ハート",
+}
+
+local point_fig = shape_name[point_type]
+
+obj.load("figure",point_fig,point_color,point_size)
+-- interpolationのp0を描画
+obj.draw(p0x,p0y,p0z)
+-- interpolationのp1を描画
+obj.draw(p1x,p1y,p1z)
+-- interpolationのp2を描画
+obj.draw(p2x,p2y,p2z)
+-- interpolationのp3を描画
+obj.draw(p3x,p3y,p3z)
+
+obj.load("text","p0")
+-- interpolationのp0を描画
+obj.draw(p0x,p0y,p0z)
+obj.load("text","p1")
+-- interpolationのp1を描画
+obj.draw(p1x,p1y,p1z)
+obj.load("text","p2")
+-- interpolationのp2を描画
+obj.draw(p2x,p2y,p2z)
+obj.load("text","p3")
+-- interpolationのp3を描画
+obj.draw(p3x,p3y,p3z)
+
+----------------- 位置をわかりやすいように表示させるだけの処理を終了
+
+----------------- インターポレーション本体
+
+local line_fig = shape_name[line_type]
+
+obj.load("figure",line_fig,line_color,line_size)
+
+for i = 1,0,-0.001 do
+        local x,y,z = obj.interpolation(i,p0x,p0y,p0z,p1x,p1y,p1z,p2x,p2y,p2z,p3x,p3y,p3z)
+
+        -- interpolationの結果を描画
+        obj.draw(x,y,z)
+end
+
+obj.setoption("drawtarget","framebuffer")
+
+obj.load("tempbuffer")
+
+----------------- インターポレーション本体終了
+
+--[["lua.txt"の内容
+        ○obj.interpolation(time,x0,y0,z0,x1,y1,z1,x2,y2,z2,x3,y3,z3)
+                連続した点p0(x0,y0,z0),p1(x1,y1,z1),p2(x2,y2,z2),p3(x3,y3,z3)から
+                時間time(0～1)に応じたp1,p2間の座標を計算します。
+                ※y,z座標は省略することが出来ます。
+                例：x,y,z = obj.interpolation(time,x0,y0,z0,x1,y1,z1,x2,y2,z2,x3,y3,z3)
+                    x,y = obj.interpolation(time,x0,y0,x1,y1,x2,y2,x3,y3)
+]]
