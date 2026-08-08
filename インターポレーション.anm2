@@ -16,6 +16,9 @@
 --color@color:点図形色,0x149678
 
 obj.setanchor("p0x,p0y",0)
+obj.setanchor("p1x,p1y",0)
+obj.setanchor("p2x,p2y",0)
+obj.setanchor("p3x,p3y",0)
 
 -- もとから持っていたオブジェクトをcacheに一旦避難
 obj.copybuffer("cache:origin","object")
