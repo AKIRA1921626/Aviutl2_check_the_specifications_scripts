@@ -18,6 +18,9 @@
 --color@line_color:線図形色,0xffffff
 
 obj.setanchor("p0x,p0y",0)
+obj.setanchor("p1x,p1y",0)
+obj.setanchor("p2x,p2y",0)
+obj.setanchor("p3x,p3y",0)
 
 obj.setoption("drawtarget","tempbuffer",obj.screen_w,obj.screen_h)
 
