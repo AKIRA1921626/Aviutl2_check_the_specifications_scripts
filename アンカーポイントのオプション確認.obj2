@@ -1,0 +1,123 @@
+--select@anker_option:アンカーオプション=1,line=1,loop=2,star=3,arm=4,mesh=5,screen=6,small=7
+--track@off_x:オフセットX,-500,500,0,1
+--track@off_y:オフセットY,-500,500,0,1
+--color@anker_color:アンカー線色,0x968214
+--check@in_out:インアウト,0
+--group:アンカー数値,false
+--value@pos:座標,{-600,-300,-600,0,-600,300,0,-300,0,0,0,300,600,-300,600,0,600,300}
+--group
+
+--check@mark:マークON
+--group:
+--select@mark_type:マーク図形タイプ=1,円=1,四角形=2,三角形=3,五角形=4,六角形=5,星型=6,ハート=7
+--track@mark_size:マーク図形サイズ,0,1000,150,1
+--color@mark_color:マーク図形色,0x149678
+
+if in_out == 0 then
+        if anker_option == 1 then -- line
+                obj.setanchor("pos",9,"line","offset",off_x,off_y,"color",anker_color)
+        elseif anker_option == 2 then -- loop
+                obj.setanchor("pos",9,"loop","offset",off_x,off_y,"color",anker_color)
+        elseif anker_option == 3 then -- star
+                obj.setanchor("pos",9,"star","offset",off_x,off_y,"color",anker_color)
+        elseif anker_option == 4 then -- arm
+                obj.setanchor("pos",9,"arm","offset",off_x,off_y,"color",anker_color)
+        elseif anker_option == 5 then -- mesh メッシュの数はユーザーの側で任意の数にするのではなく、アンカーポイントの数により決まるようだ。
+                obj.setanchor("pos",9,"mesh",3,3,"offset",off_x,off_y,"color",anker_color)
+        elseif anker_option == 6 then -- screen スクリーンはこのカスタムオブジェクトそのものを縮小拡大すればわかる
+                obj.setanchor("pos",9,"screen","offset",off_x,off_y,"color",anker_color)
+        elseif anker_option == 7 then -- small
+                obj.setanchor("pos",9,"small","offset",off_x,off_y,"color",anker_color)
+        end
+else
+        if anker_option == 1 then -- line
+                obj.setanchor("pos",9,"line","offset",off_x,off_y,"color",anker_color,"inout")
+        elseif anker_option == 2 then -- loop
+                obj.setanchor("pos",9,"loop","offset",off_x,off_y,"color",anker_color,"inout")
+        elseif anker_option == 3 then -- star
+                obj.setanchor("pos",9,"star","offset",off_x,off_y,"color",anker_color,"inout")
+        elseif anker_option == 4 then -- arm
+                obj.setanchor("pos",9,"arm","offset",off_x,off_y,"color",anker_color,"inout")
+        elseif anker_option == 5 then -- mesh メッシュの数はユーザーの側で任意の数にするのではなく、アンカーポイントの数により決まるようだ。
+                obj.setanchor("pos",9,"mesh",3,3,"offset",off_x,off_y,"color",anker_color,"inout")
+        elseif anker_option == 6 then -- screen スクリーンはこのカスタムオブジェクトそのものを縮小拡大すればわかる
+                obj.setanchor("pos",9,"screen","offset",off_x,off_y,"color",anker_color,"inout")
+        elseif anker_option == 7 then -- small
+                obj.setanchor("pos",9,"small","offset",off_x,off_y,"color",anker_color,"inout")
+        end
+end
+
+--[[ 
+        「lua.txt」からobj.setanchorのオプションの項目
+        
+                option  : 各種オプションを列挙出来ます。
+                          "line"                = アンカーポイントを線で結びます。
+                          "loop"                = アンカーポイントを線で結び一周させます。
+                          "star"                = アンカーポイントをオブジェクトの中心とそれぞれ線で結びます。
+                          "arm"                 = アンカーポイントとオブジェクトの中心を線で結びます。
+                          "mesh",横数,縦数      = アンカーポイントを網目状に線で結びます。後続の引数に格子点数を指定します。
+                          "color",色            = 上記オプションの線の色(RGB)を変更します。後続の引数に色(0x000000～0xffffff)を指定します。
+                          "rgba",色             = 上記オプションの線の色(RGBA)を変更します。後続の引数にα値を含めた色(0x00000000～0xffffffff)を指定します。
+                          "inout"               = 上記オプションの線の表示をIN,OUT側の2個として表示します。(アンカー数は半々になります)
+                          "xyz"                 = アンカーポイントを3D座標で制御します。※デフォルトは2D座標
+                          "offset",X,Y          = アンカーポイントの表示オフセットを設定します。後続の引数にオフセット値を指定します。
+                          "offset.xyz",X,Y,Z    = アンカーポイントの表示オフセットを3D座標で設定します。後続の引数にオフセット値を指定します。
+                          "screen"              = スクリーン座標で制御します。※デフォルトはオブジェクト座標
+                          "small"               = 小さいアンカーポイントで表示します。
+                          {座標テーブル}        = nameで指定されている座標の数が正しくない場合に指定の座標テーブルでアンカーを設定します。
+                          ※nameで定義されている項目への反映はアンカーが移動した時になります
+]]
+
+obj.setoption("drawtarget","tempbuffer",obj.screen_w,obj.screen_h)
+
+----------------- p0~p3までの位置をわかりやすいように表示させるだけの処理
+
+if mark == 1 then
+
+local shape_name = {
+        [1] = "円",
+        [2] = "四角形",
+        [3] = "三角形",
+        [4] = "五角形",
+        [5] = "六角形",
+        [6] = "星型",
+        [7] = "ハート",
+}
+
+obj.load("figure",shape_name[mark_type],mark_color,mark_size)
+obj.draw(pos[1],pos[2])
+obj.draw(pos[3],pos[4])
+obj.draw(pos[5],pos[6])
+obj.draw(pos[7],pos[8])
+obj.draw(pos[9],pos[10])
+obj.draw(pos[11],pos[12])
+obj.draw(pos[13],pos[14])
+obj.draw(pos[15],pos[16])
+obj.draw(pos[17],pos[18])
+
+obj.load("text","1")
+obj.draw(pos[1],pos[2])
+obj.load("text","2")
+obj.draw(pos[3],pos[4])
+obj.load("text","3")
+obj.draw(pos[5],pos[6])
+obj.load("text","4")
+obj.draw(pos[7],pos[8])
+obj.load("text","5")
+obj.draw(pos[9],pos[10])
+obj.load("text","6")
+obj.draw(pos[11],pos[12])
+obj.load("text","7")
+obj.draw(pos[13],pos[14])
+obj.load("text","8")
+obj.draw(pos[15],pos[16])
+obj.load("text","9")
+obj.draw(pos[17],pos[18])
+
+end
+
+----------------- 位置をわかりやすいように表示させるだけの処理を終了
+
+obj.setoption("drawtarget","framebuffer")
+
+obj.load("tempbuffer")
