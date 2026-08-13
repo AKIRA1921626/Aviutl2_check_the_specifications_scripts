@@ -1,0 +1,105 @@
+--color@col:色,nil
+--track@alpha:透明度,0,100,100,1
+--check@display:LuaJITのバージョンをログに表示,1
+
+-- =========================================================================
+-- 【ffi（Foreign Function Interface）とは？】
+-- 外部DLLファイルを自作・配置しなくても、C言語レベルのメモリ操作や
+-- Windows API / C言語関数をLua上から直接呼び出せるようにする拡張機能。
+-- 
+-- Q. なぜ外部DLLファイルがないのに require("ffi") できるのか？
+-- A. AviUtlの動作基盤である「LuaJIT」内部に標準組み込みされているため。
+--
+-- Memo: 標準組み込みライブラリには "bit", "jit", "string", "math", "table" 等がある。
+--
+-- Memo: 公式ドキュメント（lua.txt）には以下の記述がある。
+-- 「○スクリプト制御ではtable,string,mathライブラリのみ利用出来ます。os,debug,ffi.Cは共通で外しています。」
+--
+-- Q. ドキュメントに制限の記載があるのに使えるのはなぜ？
+-- A. 公式ドキュメントには利用制限が記載されていますが、
+-- 実際のスクリプトファイル環境(.anm2等）では require("ffi") およびFFI機能が利用できることを確認しています。
+-- ただし、スクリプト制御では require("os") require("debug") require("ffi") が行えないが、
+-- スクリプトファイル(.anm2等）では、 require("ffi") は行えるが、 require("os") require("debug") は行えないようです。
+-- この違いの原因は、正確には定義が違うのか、それともほかの原因があるのかは不明。
+--
+-- スクリプト制御
+-- require("os")   → ×
+-- require("debug") → ×
+-- require("ffi")   → ×
+-- 
+-- スクリプトファイル(.anm2等）
+-- require("os")   → ×
+-- require("debug") → ×
+-- require("ffi")   → ○
+-- =========================================================================
+
+-- checkがONならLuaJITの確認の処理を実行
+if display == 1 then
+    -- LuaJIT環境であるか確認した上でバージョンを出力
+    -- jit はグローバル変数として自動割り当てされているため代入不要
+    if jit then
+        print("LuaJITバージョン:", jit.version)
+        print("内部バージョン番号:", jit.version_num)
+        print("対象アーキテクチャ:", jit.arch)
+        print("OS:", jit.os)
+    else
+        print("LuaJIT環境ではありません（標準Luaで実行されています）")
+    end
+end
+
+-- 色が指定されていなければ処理を行わず終了
+if col == nil then
+    return
+else
+    -- FFIモジュールのロード（処理が必要なタイミングで読み込む）
+    local ffi = require("ffi")
+
+    -- =====================================================================
+    -- 【getpixeldata とメモリ構造の仕様】
+    -- 1. data には画像データの「先頭メモリ番地（ポインタ）」が返ってくる。
+    -- 2. 今回はRGBA32bitを指定しているため、1ピクセルにつき4バイト、
+    --    R → G → B → A の順で横w×縦hの画像データが1次元に並んでいる。
+    -- =====================================================================
+    
+    -- 1. 画像データの先頭アドレス（userdata）とサイズを取得
+    local data, w, h = obj.getpixeldata("object", "rgba")
+
+    -- 2. 正しく取得できているか安全性をチェック
+    if data ~= nil and w > 0 and h > 0 then
+        
+        -- 3. userdata（ポインタ）を 1バイト単位（0~255）で操作できる型へ変換
+        local ptr = ffi.cast("uint8_t*", data)
+        
+        -- 全ピクセル数（幅 × 高さ）
+        local total_pixels = w * h
+
+        -- col（数値）を RGB（0~255）の各成分に分解
+        local r, g, b = RGB(col)
+
+        -- トラックバーの値（0~100）を 0.0~1.0 の倍率に変換
+        local a_factor = alpha / 100
+        
+        -- 4. メモリを直接操作して色と透明度を変更するループ処理
+        for i = 0, total_pixels - 1 do
+            local idx = i * 4
+            
+            -- メモリ配置の参照例:
+            -- ptr[idx + 0] : R
+            -- ptr[idx + 1] : G
+            -- ptr[idx + 2] : B
+            -- ptr[idx + 3] : A
+            
+            -- 元のアルファ値（0~255）を取得し、トラックバーの倍率を掛ける
+            local orig_a = ptr[idx + 3]
+            local new_a = math.floor(orig_a * a_factor)
+
+            ptr[idx + 0] = r     -- R
+            ptr[idx + 1] = g     -- G
+            ptr[idx + 2] = b     -- B
+            ptr[idx + 3] = new_a -- A（計算後の透明度）
+        end
+        
+        -- 5. 書き換えたメモリ領域をオブジェクトバッファへ戻して描画を更新
+        obj.putpixeldata("object", data, w, h, "rgba")
+    end
+end
