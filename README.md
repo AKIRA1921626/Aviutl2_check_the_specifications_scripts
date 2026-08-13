@@ -71,3 +71,6 @@ Variable_limit.luaが検証に必要。
 # アンカーポイントのオプション確認.obj2
 obj.setanchor()の引数におけるオプションの使用を確認した。  
 カスタムオブジェクトなのでメディアオブジェクトの中に表示される。    
+
+# getpixeldata確認.anm2  
+obj.getpixeldata()の仕様を確認するスクリプト。  
