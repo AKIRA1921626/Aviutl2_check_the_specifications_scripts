@@ -74,3 +74,5 @@ obj.setanchor()の引数におけるオプションの使用を確認した。
 
 # getpixeldata確認.anm2  
 obj.getpixeldata()の仕様を確認するスクリプト。  
+ffiなどのライブラリはここで解説されているようだ。  
+https://luajit.org/ext_ffi.html  

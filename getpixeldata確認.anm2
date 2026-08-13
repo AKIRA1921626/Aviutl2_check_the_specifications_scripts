@@ -9,6 +9,8 @@
 -- 
 -- Q. なぜ外部DLLファイルがないのに require("ffi") できるのか？
 -- A. AviUtlの動作基盤である「LuaJIT」内部に標準組み込みされているため。
+-- ffiなどのライブラリはここで解説されているようだ。  
+-- https://luajit.org/ext_ffi.html  
 --
 -- Memo: 標準組み込みライブラリには "bit", "jit", "string", "math", "table" 等がある。
 --
