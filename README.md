@@ -66,11 +66,12 @@ Aviutl2での変数の上限がローカル変数が200個まで、となって�
 Variable_limit.luaが検証に必要。  
 
 # Variable_limit.lua  
-変数上限検証.anm2で使う用に作成した.lua
+変数上限検証.anm2で使う用に作成した.lua  
 
 # アンカーポイントのオプション確認.obj2
 obj.setanchor()の引数におけるオプションの使用を確認した。  
 カスタムオブジェクトなのでメディアオブジェクトの中に表示される。    
+v2.1.4で調べた  
 
 # getpixeldata確認.anm2  
 obj.getpixeldata()の仕様を確認するスクリプト。  
