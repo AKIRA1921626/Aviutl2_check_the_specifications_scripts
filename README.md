@@ -78,3 +78,7 @@ obj.getpixeldata()の仕様を確認するスクリプト。
 v2.1.4で調べた  
 ffiなどのライブラリはここで解説されているようだ。  
 https://luajit.org/ext_ffi.html  
+
+# 汎用データ領域テスト.anm2
+汎用データ領域のアドレスと中身を確認した。  
+aviutl2_v2.1.14で調べた。  

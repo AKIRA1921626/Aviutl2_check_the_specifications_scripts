@@ -1,0 +1,20 @@
+--data@test_counter:8
+
+-- LuaJITのFFI機能を利用できる環境の場合の例
+local ffi = require("ffi")
+
+-- 取得したuserdataを数値（64bit整数など）を読み書きできるポインタ型にキャスト
+local ptr = obj.data("test_counter")
+local int_ptr = ffi.cast("int64_t*", ptr)
+
+-- 取得したデータの型と文字列表現を確認
+local s = tostring(ptr)
+
+-- 現在の中身を代入
+local current_val = tonumber(int_ptr[0])
+
+-- テストとして値を書き換える（例: 起動ごとに1増やす、または特定の値を書き込む）
+int_ptr[0] = current_val + 1
+
+print("汎用データのタイプとアドレス = ",s)
+print("汎用データの数値 = ", string.format("%d", current_val))
